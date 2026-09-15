@@ -22,14 +22,26 @@ func main() {
 		case "web.ip":
 			context.HTML(200, "index.html", gin.H{
 				"Title":   "Привет",
-				"Message": "Это страница web.ip.",
+				"Message": "Это главная страница.",
 			})
 		case "other.ip":
 			context.HTML(200, "other.html", gin.H{
 				"Title":   "Другая страница",
 				"Message": "Вы открыли other.ip.",
 			})
+		case "localhost":
+			context.HTML(200, "index.html", gin.H{
+				"Title":   "Привет",
+				"Message": "Главная страница.",
+			})
 		default:
+			if net.ParseIP(host) != nil {
+				context.HTML(200, "index.html", gin.H{
+					"Title":   "Привет",
+					"Message": "Главная страница: " + host,
+				})
+				return
+			}
 			context.String(404, "Неизвестный домен: %s", host)
 		}
 	})
